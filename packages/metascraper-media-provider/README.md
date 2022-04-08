@@ -62,6 +62,26 @@ Default: `30000`
 
 The maximum time allowed to wait until considering the request as timed out.
 
+##### populators
+
+Type: `object`
+
+Each value of the object should be a function that returns required information. 
+Function will receive a `raw` data related to the url as a param.
+Key names will be added to the result.
+For example:
+
+```js
+{
+  populators: {
+     videoQuality(data) {
+       ...
+       return ...
+     }
+  }
+}
+```
+
 ## License
 
 **metascraper-media-provider** © [Microlink](https://microlink.io), Released under the [MIT](https://github.com/microlinkhq/metascraper/blob/master/LICENSE.md) License.<br>

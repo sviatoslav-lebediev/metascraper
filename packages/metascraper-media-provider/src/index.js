@@ -105,6 +105,17 @@ const getDescription = ({ description }) => descriptionFn(description)
 
 module.exports = (opts = {}) => {
   const getMedia = createGetMedia(opts)
+  const populators = Object.fromEntries(
+    Object.entries(opts.populators || []).map(([key, populator]) => {
+      const wrapped = async ({ url }) => {
+        const media = await getMedia(url);
+
+        return populator(media);
+      };
+
+      return [key, wrapped];
+    })
+  )
 
   return {
     audio: async ({ url }) => getAudio(await getMedia(url)),
@@ -115,7 +126,8 @@ module.exports = (opts = {}) => {
     lang: async ({ url }) => getLang(await getMedia(url)),
     publisher: async ({ url }) => getPublisher(await getMedia(url)),
     title: async ({ url }) => getTitle(await getMedia(url)),
-    video: async ({ url }) => getVideo(await getMedia(url))
+    video: async ({ url }) => getVideo(await getMedia(url)),
+    ...populators
   }
 }
 
